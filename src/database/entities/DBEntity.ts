@@ -17,10 +17,8 @@ type OptionsInArrayAnyOf<T, K extends keyof T> = Required<
   Pick<Options<T, K>, 'key' | 'inArrayAnyOf'>
 >;
 
-export default abstract class DBEntity<Entity extends { id: string }, ChangeDTO, CreateDTO> {
+export default abstract class DBEntity<Entity extends { id: string }> {
   protected entities: Entity[] = [];
-
-  // abstract create(createDto: CreateDTO): Promise<Entity>;
 
   private runChecks<T extends Entity, K extends keyof T>(entity: T, options: Options<T, K>) {
     if (options.equals) {

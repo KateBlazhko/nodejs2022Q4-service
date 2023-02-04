@@ -5,11 +5,7 @@ import DBEntity from './DBEntity';
 export type CreateArtistDTO = Omit<Artist, 'id'>;
 export type ChangeArtistDTO = Partial<Omit<Artist, 'id'>>;
 
-export default class DBArtists extends DBEntity<
-  Artist,
-  ChangeArtistDTO,
-  CreateArtistDTO
-> {
+export default class DBArtists extends DBEntity<Artist, ChangeArtistDTO, CreateArtistDTO> {
   async create(dto: CreateArtistDTO) {
     const created: Artist = {
       ...dto,
