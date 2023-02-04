@@ -10,7 +10,5 @@ import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [AlbumModule, UserModule, TrackModule, ArtistModule, FavoritesModule, DatabaseModule],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
