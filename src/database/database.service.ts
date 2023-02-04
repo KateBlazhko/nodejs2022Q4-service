@@ -9,8 +9,8 @@ import DBUsers from './entities/DBUsers';
 export class DatabaseService {
   users = new DBUsers();
   artists = new DBArtists();
-  //   albums = new DBAlbums();
-  //   tracks = new DBTracks();
+  albums = new DBAlbums();
+  tracks = new DBTracks();
 
   constructor() {
     const deepCopyResultTrap: ProxyHandler<any> = {

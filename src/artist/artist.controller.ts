@@ -10,6 +10,7 @@ import {
   Param,
   Post,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
@@ -24,8 +25,8 @@ export class ArtistController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body() createCatDto: CreateArtistDTO): Promise<Artist> {
-    return await this.artistsService.create(createCatDto);
+  async create(@Body(new ValidationPipe()) createArtistDTO: CreateArtistDTO): Promise<Artist> {
+    return await this.artistsService.create(createArtistDTO);
   }
 
   @Get()
@@ -46,7 +47,10 @@ export class ArtistController {
 
   @Put(':id')
   @Header('Content-Type', 'application/json')
-  async update(@Param('id') id: string, @Body() changeArtistDTO: ChangeArtistDTO): Promise<Artist> {
+  async update(
+    @Param('id') id: string,
+    @Body(new ValidationPipe()) changeArtistDTO: ChangeArtistDTO,
+  ): Promise<Artist> {
     try {
       return await this.artistsService.change(id, changeArtistDTO);
     } catch (e: unknown) {

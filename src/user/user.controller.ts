@@ -28,9 +28,9 @@ export class UserController {
   @Post()
   @Header('Content-Type', 'application/json')
   async create(
-    @Body(new ValidationPipe()) createCatDto: CreateUserDTO,
+    @Body(new ValidationPipe()) createUserDTO: CreateUserDTO,
   ): Promise<Omit<User, 'password'>> {
-    return await this.usersService.create(createCatDto);
+    return await this.usersService.create(createUserDTO);
   }
 
   @Get()
