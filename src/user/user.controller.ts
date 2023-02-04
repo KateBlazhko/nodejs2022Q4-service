@@ -11,6 +11,7 @@ import {
   ForbiddenException,
   NotFoundException,
   HttpCode,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -26,7 +27,9 @@ export class UserController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body() createCatDto: CreateUserDTO): Promise<Omit<User, 'password'>> {
+  async create(
+    @Body(new ValidationPipe()) createCatDto: CreateUserDTO,
+  ): Promise<Omit<User, 'password'>> {
     return await this.usersService.create(createCatDto);
   }
 
@@ -50,7 +53,7 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async update(
     @Param('id') id: string,
-    @Body() updatePasswordDTO: UpdatePasswordDTO,
+    @Body(new ValidationPipe()) updatePasswordDTO: UpdatePasswordDTO,
   ): Promise<Omit<User, 'password'>> {
     try {
       return await this.usersService.updatePassword(id, updatePasswordDTO);

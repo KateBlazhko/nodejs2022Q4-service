@@ -26,15 +26,15 @@ export class UserService {
   }
 
   async updatePassword(id: string, changeDTO: UpdatePasswordDTO): Promise<Omit<User, 'password'>> {
-    if (!validate(id)) throw new InvalidID('get user');
+    if (!validate(id)) throw new InvalidID('update password');
 
     const user: User | null = await this.database.users.findOne({ key: 'id', equals: id });
 
-    if (!user) throw new NoRequiredEntity('delete user');
+    if (!user) throw new NoRequiredEntity('update password');
 
     const nowDate = new Date();
 
-    if (user.password !== changeDTO.oldPassword) throw new WrongPassword('change password');
+    if (user.password !== changeDTO.oldPassword) throw new WrongPassword('update password');
 
     const { password, ...changed } = await this.database.users.change(id, {
       ...user,
@@ -47,7 +47,7 @@ export class UserService {
   }
 
   async delete(id: string): Promise<User> {
-    if (!validate(id)) throw new InvalidID('get user');
+    if (!validate(id)) throw new InvalidID('delete user');
 
     const deleted: User | null = await this.database.users.findOne({ key: 'id', equals: id });
 
