@@ -12,8 +12,6 @@ export class TrackService {
   constructor(private database: DatabaseService) {}
 
   async create(createDTO: CreateTrackDTO): Promise<Track> {
-    const nowDate = new Date();
-
     return await this.database.tracks.create({
       ...createDTO,
       id: v4(),

@@ -2,10 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AlbumService } from 'src/album/album.service';
 import { ArtistService } from 'src/artist/artist.service';
 import { DatabaseService } from 'src/database/database.service';
-import { InvalidID } from 'src/errors/InvalidID.error';
-import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { TrackService } from 'src/track/track.service';
-import { validate } from 'uuid';
 import { FavoritesDTO } from './interfaces/favs.interface';
 
 @Injectable()
