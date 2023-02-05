@@ -2,10 +2,10 @@ import { IsString, IsNumber } from 'class-validator';
 
 export class ChangeAlbumDTO {
   @IsString()
-  name: string;
+  name?: string;
 
   @IsNumber()
-  year: number;
+  year?: number;
 
-  artistId: string | null;
+  artistId?: string | null;
 }

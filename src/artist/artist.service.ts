@@ -6,10 +6,16 @@ import { v4, validate } from 'uuid';
 import { ChangeArtistDTO } from './dto/change-artist.dto';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { TrackService } from 'src/track/track.service';
+import { AlbumService } from 'src/album/album.service';
 
 @Injectable()
 export class ArtistService {
-  constructor(private database: DatabaseService) {}
+  constructor(
+    private database: DatabaseService,
+    private trackService: TrackService,
+    private albumService: AlbumService,
+  ) {}
 
   async create(createDTO: CreateArtistDTO): Promise<Artist> {
     const created = await this.database.artists.create({
@@ -39,6 +45,18 @@ export class ArtistService {
     const deleted: Artist | null = await this.database.artists.findOne({ key: 'id', equals: id });
 
     if (!deleted) throw new NoRequiredEntity('delete artist');
+
+    const tracks = await this.database.tracks.findMany({ key: 'artistId', equals: id });
+    await Promise.all(
+      tracks.map(async (track) => await this.trackService.change(track.id, { artistId: null })),
+    );
+
+    const albums = await this.database.albums.findMany({ key: 'artistId', equals: id });
+    await Promise.all(
+      albums.map(async (album) => await this.albumService.change(album.id, { artistId: null })),
+    );
+
+    await this.database.favorites.delete(id, 'artists');
 
     await this.database.artists.delete(id, deleted);
     return deleted;

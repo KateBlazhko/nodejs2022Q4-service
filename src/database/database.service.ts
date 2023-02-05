@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { cloneDeep } from 'lodash';
 import DBAlbums from './entities/DBAlbums';
 import DBArtists from './entities/DBArtists';
+import DBFavorites from './entities/DBFavorites';
 import DBTracks from './entities/DBTracks';
 import DBUsers from './entities/DBUsers';
 
@@ -11,6 +12,7 @@ export class DatabaseService {
   artists = new DBArtists();
   albums = new DBAlbums();
   tracks = new DBTracks();
+  favorites = new DBFavorites();
 
   constructor() {
     const deepCopyResultTrap: ProxyHandler<any> = {

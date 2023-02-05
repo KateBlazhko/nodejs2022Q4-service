@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { TrackService } from 'src/track/track.service';
 import { v4, validate } from 'uuid';
 import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
@@ -9,7 +10,7 @@ import { Album } from './interfaces/album.interface';
 
 @Injectable()
 export class AlbumService {
-  constructor(private database: DatabaseService) {}
+  constructor(private database: DatabaseService, private trackService: TrackService) {}
 
   async create(createDTO: CreateAlbumDTO): Promise<Album> {
     return await this.database.albums.create({
@@ -37,6 +38,13 @@ export class AlbumService {
     const deleted: Album | null = await this.database.albums.findOne({ key: 'id', equals: id });
 
     if (!deleted) throw new NoRequiredEntity('delete album');
+
+    const tracks = await this.database.tracks.findMany({ key: 'albumId', equals: id });
+    await Promise.all(
+      tracks.map(async (track) => await this.trackService.change(track.id, { albumId: null })),
+    );
+
+    await this.database.favorites.delete(id, 'albums');
 
     return await this.database.albums.delete(id, deleted);
   }

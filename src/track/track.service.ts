@@ -40,6 +40,8 @@ export class TrackService {
 
     if (!deleted) throw new NoRequiredEntity('delete track');
 
+    await this.database.favorites.delete(id, 'tracks');
+
     await this.database.tracks.delete(id, deleted);
     return deleted;
   }
