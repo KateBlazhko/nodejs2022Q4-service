@@ -1,9 +1,10 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 import { AppModule } from './app.module';
-import { PORT_NAME } from './constants/constants';
 import { readFile } from 'node:fs/promises';
 
 async function bootstrap() {
@@ -21,6 +22,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('doc', app, JSON.parse(file));
 
-  await app.listen(PORT_NAME);
+  await app.listen(Number(process.env.PORT) || 4000);
 }
 bootstrap();
