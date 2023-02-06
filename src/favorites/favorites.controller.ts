@@ -26,10 +26,10 @@ export class FavoritesController {
 
   @Post('track/:id')
   @Header('Content-Type', 'application/json')
-  async addTrack(@Param('id') id: string): Promise<{ message: string}> {
+  async addTrack(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.add(id, 'tracks');
-      return {message: 'The element was successfully added'}
+      return { message: 'The element was successfully added' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
@@ -39,10 +39,10 @@ export class FavoritesController {
 
   @Post('album/:id')
   @Header('Content-Type', 'application/json')
-  async addAlbum(@Param('id') id: string): Promise<{ message: string}> {
+  async addAlbum(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.add(id, 'albums');
-      return {message: 'The element was successfully added'}
+      return { message: 'The element was successfully added' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
@@ -52,10 +52,10 @@ export class FavoritesController {
 
   @Post('artist/:id')
   @Header('Content-Type', 'application/json')
-  async addArtist(@Param('id') id: string): Promise<{ message: string}> {
+  async addArtist(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.add(id, 'artists');
-      return {message: 'The element was successfully added'}
+      return { message: 'The element was successfully added' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
@@ -65,10 +65,10 @@ export class FavoritesController {
 
   @Delete('track/:id')
   @HttpCode(204)
-  async removeTrack(@Param('id') id: string): Promise<{ message: string}> {
+  async removeTrack(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.delete(id, 'tracks');
-      return {message: 'The element was successfully deleded'}
+      return { message: 'The element was successfully deleded' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
@@ -78,10 +78,10 @@ export class FavoritesController {
 
   @Delete('album/:id')
   @HttpCode(204)
-  async removeAlbum(@Param('id') id: string): Promise<{ message: string}> {
+  async removeAlbum(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.delete(id, 'albums');
-      return {message: 'The element was successfully deleded'}
+      return { message: 'The element was successfully deleded' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
@@ -91,10 +91,10 @@ export class FavoritesController {
 
   @Delete('artist/:id')
   @HttpCode(204)
-  async removeArtist(@Param('id') id: string): Promise<{ message: string}> {
+  async removeArtist(@Param('id') id: string): Promise<{ message: string }> {
     try {
       await this.favoritesService.delete(id, 'artists');
-      return {message: 'The element was successfully deleded'}
+      return { message: 'The element was successfully deleded' };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
