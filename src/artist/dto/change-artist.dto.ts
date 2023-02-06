@@ -1,12 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger/dist/decorators/api-property.decorator';
-import { IsString, IsBoolean } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger/dist/decorators/api-property.decorator';
+import { IsString, IsBoolean, ValidateIf } from 'class-validator';
 
 export class ChangeArtistDTO {
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsString()
-  name: string;
+  name?: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @ValidateIf((_, value) => value !== undefined)
   @IsBoolean()
-  grammy: boolean;
+  grammy?: boolean;
 }

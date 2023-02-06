@@ -1,13 +1,21 @@
-import { ApiProperty } from '@nestjs/swagger/dist/decorators';
-import { IsString, IsNumber } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger/dist/decorators';
+import { IsString, IsNumber, IsPositive, IsOptional, ValidateIf } from 'class-validator';
 
 export class ChangeAlbumDTO {
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @ValidateIf((_, value) => value !== undefined)
+  @IsOptional()
+  @IsString()
   name?: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @ValidateIf((_, value) => value !== undefined)
+  @IsNumber()
+  @IsPositive()
   year?: number;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
   artistId?: string | null;
 }
