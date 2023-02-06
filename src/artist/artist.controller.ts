@@ -25,7 +25,7 @@ export class ArtistController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body(new ValidationPipe()) createArtistDTO: CreateArtistDTO): Promise<Artist> {
+  async create(@Body(ValidationPipe) createArtistDTO: CreateArtistDTO): Promise<Artist> {
     return await this.artistsService.create(createArtistDTO);
   }
 
@@ -49,7 +49,7 @@ export class ArtistController {
   @Header('Content-Type', 'application/json')
   async update(
     @Param('id') id: string,
-    @Body(new ValidationPipe()) changeArtistDTO: ChangeArtistDTO,
+    @Body(ValidationPipe) changeArtistDTO: ChangeArtistDTO,
   ): Promise<Artist> {
     try {
       return await this.artistsService.change(id, changeArtistDTO);

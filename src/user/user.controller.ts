@@ -28,7 +28,7 @@ export class UserController {
   @Post()
   @Header('Content-Type', 'application/json')
   async create(
-    @Body(new ValidationPipe()) createUserDTO: CreateUserDTO,
+    @Body(ValidationPipe) createUserDTO: CreateUserDTO,
   ): Promise<Omit<User, 'password'>> {
     return await this.usersService.create(createUserDTO);
   }
@@ -53,7 +53,7 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async update(
     @Param('id') id: string,
-    @Body(new ValidationPipe()) updatePasswordDTO: UpdatePasswordDTO,
+    @Body(ValidationPipe) updatePasswordDTO: UpdatePasswordDTO,
   ): Promise<Omit<User, 'password'>> {
     try {
       return await this.usersService.updatePassword(id, updatePasswordDTO);

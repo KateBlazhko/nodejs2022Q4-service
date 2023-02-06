@@ -25,7 +25,7 @@ export class AlbumController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body(new ValidationPipe()) createAlbumDTO: CreateAlbumDTO): Promise<Album> {
+  async create(@Body(ValidationPipe) createAlbumDTO: CreateAlbumDTO): Promise<Album> {
     return await this.albumService.create(createAlbumDTO);
   }
 
@@ -49,7 +49,7 @@ export class AlbumController {
   @Header('Content-Type', 'application/json')
   async update(
     @Param('id') id: string,
-    @Body(new ValidationPipe()) changeAlbumDTO: ChangeAlbumDTO,
+    @Body(ValidationPipe) changeAlbumDTO: ChangeAlbumDTO,
   ): Promise<Album> {
     try {
       return await this.albumService.change(id, changeAlbumDTO);

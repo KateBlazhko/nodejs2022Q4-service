@@ -25,7 +25,7 @@ export class TrackController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body(new ValidationPipe()) createDTO: CreateTrackDTO): Promise<Track> {
+  async create(@Body(ValidationPipe) createDTO: CreateTrackDTO): Promise<Track> {
     return await this.tracksService.create(createDTO);
   }
 
@@ -49,7 +49,7 @@ export class TrackController {
   @Header('Content-Type', 'application/json')
   async update(
     @Param('id') id: string,
-    @Body(new ValidationPipe()) changeDTO: ChangeTrackDTO,
+    @Body(ValidationPipe) changeDTO: ChangeTrackDTO,
   ): Promise<Track> {
     try {
       return await this.tracksService.change(id, changeDTO);
