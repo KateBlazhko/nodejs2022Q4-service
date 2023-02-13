@@ -1,0 +1,33 @@
+version: '3.0'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+    networks:
+      - custom
+    env_file:
+      - .env
+    command: npm run start:dev
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    container_name: postgres
+    build:
+      context: ./database
+    networks:
+      - custom
+    env_file:
+      - .env
+
+networks:
+  custom:
+    name: custom
+    driver: bridge
