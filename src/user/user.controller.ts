@@ -12,16 +12,20 @@ import {
   NotFoundException,
   HttpCode,
   ValidationPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { User } from './interfaces/user.interface';
+// import { User } from './interfaces/user.interface';
 import { UserService } from './user.service';
 import { WrongPassword } from 'src/errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { UserEntity } from './entity/user.entity';
 
 @Controller('user')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private usersService: UserService) {}
 
@@ -29,17 +33,17 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async create(
     @Body(ValidationPipe) createUserDTO: CreateUserDTO,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<UserEntity, 'password'>> {
     return await this.usersService.create(createUserDTO);
   }
 
   @Get()
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserEntity[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<User> {
+  async findById(@Param('id') id: string): Promise<UserEntity> {
     try {
       return await this.usersService.findById(id);
     } catch (e: unknown) {
@@ -54,7 +58,7 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body(ValidationPipe) updatePasswordDTO: UpdatePasswordDTO,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<UserEntity, 'password'>> {
     try {
       return await this.usersService.updatePassword(id, updatePasswordDTO);
     } catch (e: unknown) {
@@ -69,7 +73,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string): Promise<User> {
+  async remove(@Param('id') id: string): Promise<UserEntity> {
     try {
       return await this.usersService.delete(id);
     } catch (e: unknown) {

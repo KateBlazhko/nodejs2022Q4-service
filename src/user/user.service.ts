@@ -1,55 +1,61 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { User } from './interfaces/user.interface';
+// import { User } from './interfaces/user.interface';
 import { v4, validate } from 'uuid';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { WrongPassword } from '../errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { UserEntity } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(private database: DatabaseService) {}
 
-  async create(createDTO: CreateUserDTO): Promise<Omit<User, 'password'>> {
+  async create(createDTO: CreateUserDTO): Promise<Omit<UserEntity, 'password'>> {
     const nowDate = new Date();
-
-    const { password, ...created } = await this.database.users.create({
+    const created = new UserEntity({
       ...createDTO,
       version: 1,
       createdAt: nowDate.getTime(),
       updatedAt: nowDate.getTime(),
       id: v4(),
     });
+
+    await this.database.users.create(created);
     return created;
   }
 
-  async updatePassword(id: string, changeDTO: UpdatePasswordDTO): Promise<Omit<User, 'password'>> {
+  async updatePassword(
+    id: string,
+    changeDTO: UpdatePasswordDTO,
+  ): Promise<Omit<UserEntity, 'password'>> {
     if (!validate(id)) throw new InvalidID('update password');
 
-    const user: User | null = await this.database.users.findOne({ key: 'id', equals: id });
+    const user: UserEntity | null = await this.database.users.findOne({ key: 'id', equals: id });
 
     if (!user) throw new NoRequiredEntity('update password');
 
     const nowDate = new Date();
 
     if (user.password !== changeDTO.oldPassword) throw new WrongPassword('update password');
-
-    const { password, ...changed } = await this.database.users.change(id, {
+    const changed = new UserEntity({
       ...user,
       version: user.version + 1,
       password: changeDTO.newPassword,
       updatedAt: nowDate.getTime(),
     });
 
+    await this.database.users.change(id, changed);
+
     return changed;
   }
 
-  async delete(id: string): Promise<User> {
+  async delete(id: string): Promise<UserEntity> {
     if (!validate(id)) throw new InvalidID('delete user');
 
-    const deleted: User | null = await this.database.users.findOne({ key: 'id', equals: id });
+    const deleted: UserEntity | null = await this.database.users.findOne({ key: 'id', equals: id });
 
     if (!deleted) throw new NoRequiredEntity('delete user');
 
@@ -57,14 +63,14 @@ export class UserService {
     return deleted;
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserEntity[]> {
     return await this.database.users.findMany();
   }
 
-  async findById(id: string): Promise<User> {
+  async findById(id: string): Promise<UserEntity> {
     if (!validate(id)) throw new InvalidID('get user');
 
-    const founded: User | null = await this.database.users.findOne({ key: 'id', equals: id });
+    const founded: UserEntity | null = await this.database.users.findOne({ key: 'id', equals: id });
 
     if (!founded) throw new NoRequiredEntity('get user');
 

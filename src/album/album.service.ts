@@ -6,23 +6,24 @@ import { TrackService } from 'src/track/track.service';
 import { v4, validate } from 'uuid';
 import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
-import { Album } from './interfaces/album.interface';
+import { AlbumEntity } from './entity/album.entity';
+// import { Album } from './interfaces/album.interface';
 
 @Injectable()
 export class AlbumService {
   constructor(private database: DatabaseService, private trackService: TrackService) {}
 
-  async create(createDTO: CreateAlbumDTO): Promise<Album> {
+  async create(createDTO: CreateAlbumDTO): Promise<AlbumEntity> {
     return await this.database.albums.create({
       ...createDTO,
       id: v4(),
     });
   }
 
-  async change(id: string, changeDTO: ChangeAlbumDTO): Promise<Album> {
+  async change(id: string, changeDTO: ChangeAlbumDTO): Promise<AlbumEntity> {
     if (!validate(id)) throw new InvalidID('change album');
 
-    const album: Album | null = await this.database.albums.findOne({ key: 'id', equals: id });
+    const album: AlbumEntity | null = await this.database.albums.findOne({ key: 'id', equals: id });
 
     if (!album) throw new NoRequiredEntity('change album');
 
@@ -32,10 +33,13 @@ export class AlbumService {
     });
   }
 
-  async delete(id: string): Promise<Album> {
+  async delete(id: string): Promise<AlbumEntity> {
     if (!validate(id)) throw new InvalidID('delete album');
 
-    const deleted: Album | null = await this.database.albums.findOne({ key: 'id', equals: id });
+    const deleted: AlbumEntity | null = await this.database.albums.findOne({
+      key: 'id',
+      equals: id,
+    });
 
     if (!deleted) throw new NoRequiredEntity('delete album');
 
@@ -49,14 +53,17 @@ export class AlbumService {
     return await this.database.albums.delete(id, deleted);
   }
 
-  async findAll(): Promise<Album[]> {
+  async findAll(): Promise<AlbumEntity[]> {
     return await this.database.albums.findMany();
   }
 
-  async findById(id: string): Promise<Album> {
+  async findById(id: string): Promise<AlbumEntity> {
     if (!validate(id)) throw new InvalidID('get album');
 
-    const founded: Album | null = await this.database.albums.findOne({ key: 'id', equals: id });
+    const founded: AlbumEntity | null = await this.database.albums.findOne({
+      key: 'id',
+      equals: id,
+    });
 
     if (!founded) throw new NoRequiredEntity('get album');
 
