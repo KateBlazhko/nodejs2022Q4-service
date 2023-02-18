@@ -11,7 +11,7 @@ import {
 
 @Injectable()
 @Entity()
-export class UserEntity {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,7 +31,7 @@ export class UserEntity {
   @UpdateDateColumn()
   updatedAt: number;
 
-  constructor(partial: Partial<UserEntity>) {
+  constructor(partial: Partial<User>) {
     Object.assign(this, partial);
   }
 }

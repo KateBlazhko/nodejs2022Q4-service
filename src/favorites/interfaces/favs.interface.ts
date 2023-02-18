@@ -2,9 +2,9 @@
 // import { Artist } from 'src/artist/interfaces/artist.interface';
 // import { Track } from 'src/track/interfaces/track.interface';
 
-import { AlbumEntity } from 'src/album/entity/album.entity';
-import { ArtistEntity } from 'src/artist/entity/artist.entity';
-import { TrackEntity } from 'src/track/entity/track.entity';
+import { Album } from 'src/album/entity/album.entity';
+import { Artist } from 'src/artist/entity/artist.entity';
+import { Track } from 'src/track/entity/track.entity';
 
 export interface Favorites {
   artists: string[]; // favorite artists ids
@@ -13,7 +13,7 @@ export interface Favorites {
 }
 
 export interface FavoritesDTO {
-  artists: ArtistEntity[]; // favorite artists
-  albums: AlbumEntity[]; // favorite albums
-  tracks: TrackEntity[]; // favorite tracks
+  artists: Artist[]; // favorite artists
+  albums: Album[]; // favorite albums
+  tracks: Track[]; // favorite tracks
 }

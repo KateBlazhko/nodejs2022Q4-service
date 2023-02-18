@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ArtistEntity } from 'src/artist/entity/artist.entity';
-import { TrackEntity } from 'src/track/entity/track.entity';
+import { Artist } from 'src/artist/entity/artist.entity';
+import { Track } from 'src/track/entity/track.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 @Injectable()
-export class AlbumEntity {
+export class Album {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -15,15 +15,15 @@ export class AlbumEntity {
   @Column()
   year: number;
 
-  @ManyToOne(() => ArtistEntity, (artist) => artist.albums, { cascade: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Artist, (artist) => artist.albums, { cascade: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'artistId' })
-  artist: ArtistEntity | null;
+  artist: Artist | null;
   // artistId: string | null;
 
-  @OneToMany(() => TrackEntity, (track) => track.artist)
-  tracks: TrackEntity[];
+  @OneToMany(() => Track, (track) => track.artist)
+  tracks: Track[];
 
-  constructor(partial: Partial<AlbumEntity>) {
+  constructor(partial: Partial<Album>) {
     Object.assign(this, partial);
   }
 }

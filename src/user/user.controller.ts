@@ -22,7 +22,7 @@ import { UserService } from './user.service';
 import { WrongPassword } from 'src/errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
-import { UserEntity } from './entity/user.entity';
+import { User } from './entity/user.entity';
 
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -33,17 +33,17 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async create(
     @Body(ValidationPipe) createUserDTO: CreateUserDTO,
-  ): Promise<Omit<UserEntity, 'password'>> {
+  ): Promise<Omit<User, 'password'>> {
     return await this.usersService.create(createUserDTO);
   }
 
   @Get()
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<UserEntity> {
+  async findById(@Param('id') id: string): Promise<User> {
     try {
       return await this.usersService.findById(id);
     } catch (e: unknown) {
@@ -58,7 +58,7 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body(ValidationPipe) updatePasswordDTO: UpdatePasswordDTO,
-  ): Promise<Omit<UserEntity, 'password'>> {
+  ): Promise<Omit<User, 'password'>> {
     try {
       return await this.usersService.updatePassword(id, updatePasswordDTO);
     } catch (e: unknown) {
@@ -73,7 +73,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string): Promise<UserEntity> {
+  async remove(@Param('id') id: string): Promise<User> {
     try {
       return await this.usersService.delete(id);
     } catch (e: unknown) {

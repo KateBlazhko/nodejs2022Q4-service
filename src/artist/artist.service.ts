@@ -8,28 +8,27 @@ import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 // import { TrackService } from 'src/track/track.service';
 // import { AlbumService } from 'src/album/album.service';
-import { ArtistEntity } from './entity/artist.entity';
+import { Artist } from './entity/artist.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistService {
   constructor(
-    @InjectRepository(ArtistEntity)
-    private artistRepository: Repository<ArtistEntity>, // private database: DatabaseService, // private trackService: TrackService,
-  ) // private albumService: AlbumService,
-  {}
+    @InjectRepository(Artist)
+    private artistRepository: Repository<Artist>, // private database: DatabaseService, // private trackService: TrackService, // private albumService: AlbumService,
+  ) {}
 
-  async create(createDTO: CreateArtistDTO): Promise<ArtistEntity> {
+  async create(createDTO: CreateArtistDTO): Promise<Artist> {
     const created = this.artistRepository.create(createDTO);
 
     return await this.artistRepository.save(created);
   }
 
-  async change(id: string, changeDTO: ChangeArtistDTO): Promise<ArtistEntity> {
+  async change(id: string, changeDTO: ChangeArtistDTO): Promise<Artist> {
     if (!validate(id)) throw new InvalidID('change artist');
 
-    const artist: ArtistEntity | null = await this.artistRepository.findOneBy({ id });
+    const artist: Artist | null = await this.artistRepository.findOneBy({ id });
 
     if (!artist) throw new NoRequiredEntity('change artist');
 
@@ -39,10 +38,10 @@ export class ArtistService {
     });
   }
 
-  async delete(id: string): Promise<ArtistEntity> {
+  async delete(id: string): Promise<Artist> {
     if (!validate(id)) throw new InvalidID('delete artist');
 
-    const deleted: ArtistEntity | null = await this.artistRepository.findOneBy({ id });
+    const deleted: Artist | null = await this.artistRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete artist');
 
@@ -62,14 +61,14 @@ export class ArtistService {
     return deleted;
   }
 
-  async findAll(): Promise<ArtistEntity[]> {
+  async findAll(): Promise<Artist[]> {
     return await this.artistRepository.find();
   }
 
-  async findById(id: string): Promise<ArtistEntity> {
+  async findById(id: string): Promise<Artist> {
     if (!validate(id)) throw new InvalidID('get artist');
 
-    const founded: ArtistEntity | null = await this.artistRepository.findOneBy({ id });
+    const founded: Artist | null = await this.artistRepository.findOneBy({ id });
 
     if (!founded) throw new NoRequiredEntity('get artist');
 

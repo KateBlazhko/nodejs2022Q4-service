@@ -7,31 +7,28 @@ import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { WrongPassword } from '../errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
-import { UserEntity } from './entity/user.entity';
+import { User } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>, // private database: DatabaseService,
+    @InjectRepository(User)
+    private userRepository: Repository<User>, // private database: DatabaseService,
   ) {}
 
-  async create(createDTO: CreateUserDTO): Promise<Omit<UserEntity, 'password'>> {
-    const created = this.userRepository.create(new UserEntity(createDTO));
+  async create(createDTO: CreateUserDTO): Promise<Omit<User, 'password'>> {
+    const created = this.userRepository.create(new User(createDTO));
 
     await this.userRepository.save(created);
     return created;
   }
 
-  async updatePassword(
-    id: string,
-    changeDTO: UpdatePasswordDTO,
-  ): Promise<Omit<UserEntity, 'password'>> {
+  async updatePassword(id: string, changeDTO: UpdatePasswordDTO): Promise<Omit<User, 'password'>> {
     if (!validate(id)) throw new InvalidID('update password');
 
-    const user: UserEntity | null = await this.userRepository.findOneBy({ id });
+    const user: User | null = await this.userRepository.findOneBy({ id });
 
     if (!user) throw new NoRequiredEntity('update password');
 
@@ -39,7 +36,7 @@ export class UserService {
 
     if (user.password !== changeDTO.oldPassword) throw new WrongPassword('update password');
 
-    const changed = new UserEntity({
+    const changed = new User({
       ...user,
       password: changeDTO.newPassword,
     });
@@ -49,10 +46,10 @@ export class UserService {
     return changed;
   }
 
-  async delete(id: string): Promise<UserEntity> {
+  async delete(id: string): Promise<User> {
     if (!validate(id)) throw new InvalidID('delete user');
 
-    const deleted: UserEntity | null = await this.userRepository.findOneBy({ id });
+    const deleted: User | null = await this.userRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete user');
 
@@ -60,14 +57,14 @@ export class UserService {
     return deleted;
   }
 
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
-  async findById(id: string): Promise<UserEntity> {
+  async findById(id: string): Promise<User> {
     if (!validate(id)) throw new InvalidID('get user');
 
-    const founded: UserEntity | null = await this.userRepository.findOneBy({ id });
+    const founded: User | null = await this.userRepository.findOneBy({ id });
 
     if (!founded) throw new NoRequiredEntity('get user');
 

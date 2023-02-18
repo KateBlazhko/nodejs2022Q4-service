@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { AlbumEntity } from 'src/album/entity/album.entity';
-import { TrackEntity } from 'src/track/entity/track.entity';
+import { Album } from 'src/album/entity/album.entity';
+import { Track } from 'src/track/entity/track.entity';
 import { OneToMany } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Injectable()
 @Entity()
-export class ArtistEntity {
+export class Artist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,13 +16,13 @@ export class ArtistEntity {
   @Column()
   grammy: boolean;
 
-  @OneToMany(() => AlbumEntity, (album) => album.artist)
-  albums: AlbumEntity[];
+  @OneToMany(() => Album, (album) => album.artist)
+  albums: Album[];
 
-  @OneToMany(() => TrackEntity, (track) => track.artist)
-  tracks: TrackEntity[];
+  @OneToMany(() => Track, (track) => track.artist)
+  tracks: Track[];
 
-  constructor(partial: Partial<ArtistEntity>) {
+  constructor(partial: Partial<Artist>) {
     Object.assign(this, partial);
   }
 }

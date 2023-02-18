@@ -6,7 +6,7 @@ import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { v4, validate } from 'uuid';
 import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
-import { AlbumEntity } from './entity/album.entity';
+import { Album } from './entity/album.entity';
 // import { Album } from './interfaces/album.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -14,20 +14,20 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AlbumService {
   constructor(
-    @InjectRepository(AlbumEntity)
-    private albumsRepository: Repository<AlbumEntity>, // private database: DatabaseService, // private trackService: TrackService,
+    @InjectRepository(Album)
+    private albumsRepository: Repository<Album>, // private database: DatabaseService, // private trackService: TrackService,
   ) {}
 
-  async create(createDTO: CreateAlbumDTO): Promise<AlbumEntity> {
+  async create(createDTO: CreateAlbumDTO): Promise<Album> {
     const created = this.albumsRepository.create(createDTO);
 
     return await this.albumsRepository.save(created);
   }
 
-  async change(id: string, changeDTO: ChangeAlbumDTO): Promise<AlbumEntity> {
+  async change(id: string, changeDTO: ChangeAlbumDTO): Promise<Album> {
     if (!validate(id)) throw new InvalidID('change album');
 
-    const album: AlbumEntity | null = await this.albumsRepository.findOneBy({ id });
+    const album: Album | null = await this.albumsRepository.findOneBy({ id });
 
     if (!album) throw new NoRequiredEntity('change album');
 
@@ -37,10 +37,10 @@ export class AlbumService {
     });
   }
 
-  async delete(id: string): Promise<AlbumEntity> {
+  async delete(id: string): Promise<Album> {
     if (!validate(id)) throw new InvalidID('delete album');
 
-    const deleted: AlbumEntity | null = await this.albumsRepository.findOneBy({ id });
+    const deleted: Album | null = await this.albumsRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete album');
 
@@ -54,14 +54,14 @@ export class AlbumService {
     return await this.albumsRepository.remove(deleted);
   }
 
-  async findAll(): Promise<AlbumEntity[]> {
+  async findAll(): Promise<Album[]> {
     return await this.albumsRepository.find();
   }
 
-  async findById(id: string): Promise<AlbumEntity> {
+  async findById(id: string): Promise<Album> {
     if (!validate(id)) throw new InvalidID('get album');
 
-    const founded: AlbumEntity | null = await this.albumsRepository.findOneBy({ id });
+    const founded: Album | null = await this.albumsRepository.findOneBy({ id });
 
     if (!founded) throw new NoRequiredEntity('get album');
 

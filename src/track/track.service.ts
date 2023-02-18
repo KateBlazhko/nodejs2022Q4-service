@@ -6,27 +6,27 @@ import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { CreateTrackDTO } from './dto/create-track.dto';
 // import { Track } from './interfaces/track.interface';
 import { ChangeTrackDTO } from './dto/change-track.dto';
-import { TrackEntity } from './entity/track.entity';
+import { Track } from './entity/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrackService {
   constructor(
-    @InjectRepository(TrackEntity)
-    private trackRepository: Repository<TrackEntity>, // private database: DatabaseService,
+    @InjectRepository(Track)
+    private trackRepository: Repository<Track>, // private database: DatabaseService,
   ) {}
 
-  async create(createDTO: CreateTrackDTO): Promise<TrackEntity> {
+  async create(createDTO: CreateTrackDTO): Promise<Track> {
     const created = this.trackRepository.create(createDTO);
 
     return await this.trackRepository.save(created);
   }
 
-  async change(id: string, changeDTO: ChangeTrackDTO): Promise<TrackEntity> {
+  async change(id: string, changeDTO: ChangeTrackDTO): Promise<Track> {
     if (!validate(id)) throw new InvalidID('update track');
 
-    const track: TrackEntity | null = await this.trackRepository.findOneBy({ id });
+    const track: Track | null = await this.trackRepository.findOneBy({ id });
 
     if (!track) throw new NoRequiredEntity('update track');
 
@@ -36,10 +36,10 @@ export class TrackService {
     });
   }
 
-  async delete(id: string): Promise<TrackEntity> {
+  async delete(id: string): Promise<Track> {
     if (!validate(id)) throw new InvalidID('delete track');
 
-    const deleted: TrackEntity | null = await this.trackRepository.findOneBy({ id });
+    const deleted: Track | null = await this.trackRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete track');
 
@@ -49,14 +49,14 @@ export class TrackService {
     return deleted;
   }
 
-  async findAll(): Promise<TrackEntity[]> {
+  async findAll(): Promise<Track[]> {
     return await this.trackRepository.find();
   }
 
-  async findById(id: string): Promise<TrackEntity> {
+  async findById(id: string): Promise<Track> {
     if (!validate(id)) throw new InvalidID('get track');
 
-    const founded: TrackEntity | null = await this.trackRepository.findOneBy({ id });
+    const founded: Track | null = await this.trackRepository.findOneBy({ id });
 
     if (!founded) throw new NoRequiredEntity('get track');
 

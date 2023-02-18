@@ -16,7 +16,7 @@ import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ChangeTrackDTO } from './dto/change-track.dto';
 import { CreateTrackDTO } from './dto/create-track.dto';
-import { TrackEntity } from './entity/track.entity';
+import { Track } from './entity/track.entity';
 // import { Track } from './interfaces/track.interface';
 import { TrackService } from './track.service';
 
@@ -26,17 +26,17 @@ export class TrackController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body(ValidationPipe) createDTO: CreateTrackDTO): Promise<TrackEntity> {
+  async create(@Body(ValidationPipe) createDTO: CreateTrackDTO): Promise<Track> {
     return await this.tracksService.create(createDTO);
   }
 
   @Get()
-  async findAll(): Promise<TrackEntity[]> {
+  async findAll(): Promise<Track[]> {
     return this.tracksService.findAll();
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<TrackEntity> {
+  async findById(@Param('id') id: string): Promise<Track> {
     try {
       return await this.tracksService.findById(id);
     } catch (e: unknown) {
@@ -51,7 +51,7 @@ export class TrackController {
   async update(
     @Param('id') id: string,
     @Body(ValidationPipe) changeDTO: ChangeTrackDTO,
-  ): Promise<TrackEntity> {
+  ): Promise<Track> {
     try {
       return await this.tracksService.change(id, changeDTO);
     } catch (e: unknown) {
@@ -63,7 +63,7 @@ export class TrackController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string): Promise<TrackEntity> {
+  async remove(@Param('id') id: string): Promise<Track> {
     try {
       return await this.tracksService.delete(id);
     } catch (e: unknown) {

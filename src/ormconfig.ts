@@ -5,13 +5,13 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 const configService: TypeOrmModuleOptions = {
   type: 'postgres',
   host: process.env.POSTGRES_HOST,
-  port: Number(process.env.POSTGRESS_PORT),
+  port: Number(process.env.POSTGRES_PORT),
   username: process.env.POSTGRES_USER,
-  password: process.env.POSTGRESS_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
-  // entities: ['**/entity/*.entity.ts'],
+  entities: ['dist/**/entity/*.entity.js'],
   autoLoadEntities: true,
-  migrations: ['**/migration/*.js'],
+  // migrations: ['**/migration/*.js'],
   synchronize: false,
 };
 

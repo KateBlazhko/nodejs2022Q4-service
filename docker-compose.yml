@@ -1,10 +1,11 @@
-version: '3.0'
+version: '3.2'
 
 services:
   app:
     container_name: app
-    build:
-      context: .
+    build: .
+    links:
+      - 'postgres'
     networks:
       - custom
     env_file:
@@ -26,8 +27,17 @@ services:
       - custom
     env_file:
       - .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_DATA: '/var/lib/postgresql/data/pgdata'
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
 
 networks:
   custom:
-    name: custom
-    driver: bridge
+
+volumes:
+  pgdata:

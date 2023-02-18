@@ -17,7 +17,7 @@ import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ArtistService } from './artist.service';
 import { ChangeArtistDTO } from './dto/change-artist.dto';
 import { CreateArtistDTO } from './dto/create-artist.dto';
-import { ArtistEntity } from './entity/artist.entity';
+import { Artist } from './entity/artist.entity';
 // import { Artist } from './interfaces/artist.interface';
 
 @Controller('artist')
@@ -26,17 +26,17 @@ export class ArtistController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async create(@Body(ValidationPipe) createArtistDTO: CreateArtistDTO): Promise<ArtistEntity> {
+  async create(@Body(ValidationPipe) createArtistDTO: CreateArtistDTO): Promise<Artist> {
     return await this.artistsService.create(createArtistDTO);
   }
 
   @Get()
-  async findAll(): Promise<ArtistEntity[]> {
+  async findAll(): Promise<Artist[]> {
     return this.artistsService.findAll();
   }
 
   @Get(':id')
-  async findById(@Param('id') id: string): Promise<ArtistEntity> {
+  async findById(@Param('id') id: string): Promise<Artist> {
     try {
       return await this.artistsService.findById(id);
     } catch (e: unknown) {
@@ -51,7 +51,7 @@ export class ArtistController {
   async update(
     @Param('id') id: string,
     @Body(ValidationPipe) changeArtistDTO: ChangeArtistDTO,
-  ): Promise<ArtistEntity> {
+  ): Promise<Artist> {
     try {
       return await this.artistsService.change(id, changeArtistDTO);
     } catch (e: unknown) {
@@ -63,7 +63,7 @@ export class ArtistController {
 
   @Delete(':id')
   @HttpCode(204)
-  async remove(@Param('id') id: string): Promise<ArtistEntity> {
+  async remove(@Param('id') id: string): Promise<Artist> {
     try {
       return await this.artistsService.delete(id);
     } catch (e: unknown) {
