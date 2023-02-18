@@ -11,7 +11,9 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InvalidID } from 'src/errors/InvalidID.error';
+import { InvalidType } from 'src/errors/InvalidType.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { TypeEntity } from './entity/favorites.entity';
 import { FavoritesService } from './favorites.service';
 import { FavoritesDTO } from './interfaces/favs.interface';
 
@@ -24,81 +26,37 @@ export class FavoritesController {
     return await this.favoritesService.findAll();
   }
 
-  @Post('track/:id')
+  @Post(':type/:id')
   @Header('Content-Type', 'application/json')
-  async addTrack(@Param('id') id: string): Promise<{ message: string }> {
+  async addTrack(
+    @Param('type') type: TypeEntity,
+    @Param('id') id: string,
+  ): Promise<{ message: string }> {
     try {
-      await this.favoritesService.add(id, 'tracks');
-      return { message: 'The element was successfully added' };
+      await this.favoritesService.add(id, type);
+      return { message: `The ${type} was successfully added` };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
+      if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
-        throw new UnprocessableEntityException('There is not track with such id');
+        throw new UnprocessableEntityException(`There is not ${type} with such id`);
     }
   }
 
-  @Post('album/:id')
-  @Header('Content-Type', 'application/json')
-  async addAlbum(@Param('id') id: string): Promise<{ message: string }> {
-    try {
-      await this.favoritesService.add(id, 'albums');
-      return { message: 'The element was successfully added' };
-    } catch (e: unknown) {
-      if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
-      if (e instanceof NoRequiredEntity)
-        throw new UnprocessableEntityException('There is not album with such id');
-    }
-  }
-
-  @Post('artist/:id')
-  @Header('Content-Type', 'application/json')
-  async addArtist(@Param('id') id: string): Promise<{ message: string }> {
-    try {
-      await this.favoritesService.add(id, 'artists');
-      return { message: 'The element was successfully added' };
-    } catch (e: unknown) {
-      if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
-      if (e instanceof NoRequiredEntity)
-        throw new UnprocessableEntityException('There is not artist with such id');
-    }
-  }
-
-  @Delete('track/:id')
+  @Delete(':type/:id')
   @HttpCode(204)
-  async removeTrack(@Param('id') id: string): Promise<{ message: string }> {
+  async removeTrack(
+    @Param('type') type: TypeEntity,
+    @Param('id') id: string,
+  ): Promise<{ message: string }> {
     try {
-      await this.favoritesService.delete(id, 'tracks');
-      return { message: 'The element was successfully deleded' };
+      await this.favoritesService.delete(id, type);
+      return { message: `The ${type} was successfully deleded` };
     } catch (e: unknown) {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
+      if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
-        throw new NotFoundException('There is not track with such id');
-    }
-  }
-
-  @Delete('album/:id')
-  @HttpCode(204)
-  async removeAlbum(@Param('id') id: string): Promise<{ message: string }> {
-    try {
-      await this.favoritesService.delete(id, 'albums');
-      return { message: 'The element was successfully deleded' };
-    } catch (e: unknown) {
-      if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
-      if (e instanceof NoRequiredEntity)
-        throw new NotFoundException('There is not album with such id');
-    }
-  }
-
-  @Delete('artist/:id')
-  @HttpCode(204)
-  async removeArtist(@Param('id') id: string): Promise<{ message: string }> {
-    try {
-      await this.favoritesService.delete(id, 'artists');
-      return { message: 'The element was successfully deleded' };
-    } catch (e: unknown) {
-      if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
-      if (e instanceof NoRequiredEntity)
-        throw new NotFoundException('There is not artist with such id');
+        throw new NotFoundException(`There is not ${type} with such id`);
     }
   }
 }
