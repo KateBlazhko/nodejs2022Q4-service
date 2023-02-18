@@ -25,10 +25,20 @@ export class User {
   @VersionColumn()
   version: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    transformer: {
+      from: (date: Date) => date.getTime(),
+      to: (date: number) => date,
+    },
+  })
   createdAt: number;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    transformer: {
+      from: (date: Date) => date.getTime(),
+      to: (date: number) => date,
+    },
+  })
   updatedAt: number;
 
   constructor(partial: Partial<User>) {

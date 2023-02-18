@@ -13,7 +13,7 @@ export enum TypeEntity {
 
 @Injectable()
 @Entity()
-export class FavoritesEntity {
+export class Favorites {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,7 +23,7 @@ export class FavoritesEntity {
   @Column({ type: 'uuid' })
   identity: string;
 
-  constructor(partial: Partial<FavoritesEntity>) {
+  constructor(partial: Partial<Favorites>) {
     Object.assign(this, partial);
   }
 }

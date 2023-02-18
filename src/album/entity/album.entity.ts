@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Artist } from 'src/artist/entity/artist.entity';
 import { Track } from 'src/track/entity/track.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, RelationId } from 'typeorm';
 
 @Entity()
 @Injectable()
@@ -16,9 +16,11 @@ export class Album {
   year: number;
 
   @ManyToOne(() => Artist, (artist) => artist.albums, { cascade: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'artistId' })
   artist: Artist | null;
-  // artistId: string | null;
+
+  @Column({ nullable: true })
+  @RelationId((album: Album) => album.artist)
+  artistId: string | null;
 
   @OneToMany(() => Track, (track) => track.artist)
   tracks: Track[];

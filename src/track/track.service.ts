@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { v4, validate } from 'uuid';
+import { validate } from 'uuid';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 // import { DatabaseService } from 'src/database/database.service';
