@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
-// import { DatabaseService } from 'src/database/database.service';
 import { CreateUserDTO } from './dto/create-user.dto';
-// import { User } from './interfaces/user.interface';
-import { v4, validate } from 'uuid';
+import { validate } from 'uuid';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { WrongPassword } from '../errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
@@ -15,7 +13,7 @@ import { Repository } from 'typeorm';
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>, // private database: DatabaseService,
+    private userRepository: Repository<User>,
   ) {}
 
   async create(createDTO: CreateUserDTO): Promise<Omit<User, 'password'>> {

@@ -4,10 +4,15 @@ import { ArtistService } from 'src/artist/artist.service';
 import { DatabaseService } from 'src/database/database.service';
 import { TrackService } from 'src/track/track.service';
 import { FavoritesDTO } from './interfaces/favs.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Favorites } from './entity/favorites.entity';
 
 @Injectable()
 export class FavoritesService {
   constructor(
+    @InjectRepository(Favorites)
+    private favsRepository: Repository<Favorites>,
     private database: DatabaseService,
     private albums: AlbumService,
     private artists: ArtistService,
@@ -16,6 +21,7 @@ export class FavoritesService {
 
   async findAll(): Promise<FavoritesDTO> {
     const favsIDs = await this.database.favorites.findAll();
+    const favsAlbumIDs = await this.database.favorites.findAll();
 
     const favsAlbums = await Promise.all(
       favsIDs.albums.map(async (id) => await this.albums.findById(id)),

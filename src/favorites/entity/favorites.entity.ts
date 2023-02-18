@@ -21,7 +21,7 @@ export class Favorites {
   typeEntity: keyof TypeEntity;
 
   @Column({ type: 'uuid' })
-  identity: string;
+  idEntity: string;
 
   constructor(partial: Partial<Favorites>) {
     Object.assign(this, partial);

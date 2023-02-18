@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { validate } from 'uuid';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
-// import { DatabaseService } from 'src/database/database.service';
 import { CreateTrackDTO } from './dto/create-track.dto';
-// import { Track } from './interfaces/track.interface';
 import { ChangeTrackDTO } from './dto/change-track.dto';
 import { Track } from './entity/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +12,7 @@ import { Repository } from 'typeorm';
 export class TrackService {
   constructor(
     @InjectRepository(Track)
-    private trackRepository: Repository<Track>, // private database: DatabaseService,
+    private trackRepository: Repository<Track>,
   ) {}
 
   async create(createDTO: CreateTrackDTO): Promise<Track> {
@@ -42,8 +40,6 @@ export class TrackService {
     const deleted: Track | null = await this.trackRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete track');
-
-    // await this.database.favorites.delete(id, 'tracks');
 
     await this.trackRepository.remove(deleted);
     return deleted;

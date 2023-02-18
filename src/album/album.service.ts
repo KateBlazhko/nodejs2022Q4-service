@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
-// import { DatabaseService } from 'src/database/database.service';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
-// import { TrackService } from 'src/track/track.service';
-import { v4, validate } from 'uuid';
+import { validate } from 'uuid';
 import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
 import { Album } from './entity/album.entity';
-// import { Album } from './interfaces/album.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -15,7 +12,7 @@ import { Repository } from 'typeorm';
 export class AlbumService {
   constructor(
     @InjectRepository(Album)
-    private albumsRepository: Repository<Album>, // private database: DatabaseService, // private trackService: TrackService,
+    private albumsRepository: Repository<Album>,
   ) {}
 
   async create(createDTO: CreateAlbumDTO): Promise<Album> {
@@ -43,13 +40,6 @@ export class AlbumService {
     const deleted: Album | null = await this.albumsRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete album');
-
-    // const tracks = await this.database.tracks.findMany({ key: 'albumId', equals: id });
-    // await Promise.all(
-    //   tracks.map(async (track) => await this.trackService.change(track.id, { albumId: null })),
-    // );
-
-    // await this.database.favorites.delete(id, 'albums');
 
     return await this.albumsRepository.remove(deleted);
   }
