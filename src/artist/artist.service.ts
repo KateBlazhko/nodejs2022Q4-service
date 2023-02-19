@@ -6,13 +6,15 @@ import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { Artist } from './entity/artist.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { Favorites } from 'src/favorites/entity/favorites.entity';
 
 @Injectable()
 export class ArtistService {
   constructor(
     @InjectRepository(Artist)
     private artistRepository: Repository<Artist>,
+    private dataSource: DataSource,
   ) {}
 
   async create(createDTO: CreateArtistDTO): Promise<Artist> {
@@ -42,6 +44,14 @@ export class ArtistService {
     if (!deleted) throw new NoRequiredEntity('delete artist');
 
     await this.artistRepository.remove(deleted);
+
+    await this.dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(Favorites)
+      .where('idEntity = :id', { id })
+      .execute();
+
     return deleted;
   }
 

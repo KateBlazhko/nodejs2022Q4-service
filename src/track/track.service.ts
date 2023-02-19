@@ -6,13 +6,15 @@ import { CreateTrackDTO } from './dto/create-track.dto';
 import { ChangeTrackDTO } from './dto/change-track.dto';
 import { Track } from './entity/track.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { Favorites } from 'src/favorites/entity/favorites.entity';
 
 @Injectable()
 export class TrackService {
   constructor(
     @InjectRepository(Track)
     private trackRepository: Repository<Track>,
+    private dataSource: DataSource,
   ) {}
 
   async create(createDTO: CreateTrackDTO): Promise<Track> {
@@ -42,6 +44,14 @@ export class TrackService {
     if (!deleted) throw new NoRequiredEntity('delete track');
 
     await this.trackRepository.remove(deleted);
+
+    await this.dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(Favorites)
+      .where('idEntity = :id', { id })
+      .execute();
+
     return deleted;
   }
 

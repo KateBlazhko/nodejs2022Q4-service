@@ -6,13 +6,15 @@ import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
 import { Album } from './entity/album.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
+import { Favorites } from 'src/favorites/entity/favorites.entity';
 
 @Injectable()
 export class AlbumService {
   constructor(
     @InjectRepository(Album)
     private albumsRepository: Repository<Album>,
+    private dataSource: DataSource,
   ) {}
 
   async create(createDTO: CreateAlbumDTO): Promise<Album> {
@@ -40,6 +42,13 @@ export class AlbumService {
     const deleted: Album | null = await this.albumsRepository.findOneBy({ id });
 
     if (!deleted) throw new NoRequiredEntity('delete album');
+
+    await this.dataSource
+      .createQueryBuilder()
+      .delete()
+      .from(Favorites)
+      .where('idEntity = :id', { id })
+      .execute();
 
     return await this.albumsRepository.remove(deleted);
   }
