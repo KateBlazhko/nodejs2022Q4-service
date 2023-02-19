@@ -10,7 +10,9 @@ services:
       - custom
     env_file:
       - .env
-    command: npm run start:dev
+    command: >
+      sh -c "npm run typeorm:generate
+              npm run start:dev"
     volumes:
       - ./src:/app/src
       - /app/node_modules

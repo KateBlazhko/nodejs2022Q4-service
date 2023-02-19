@@ -10,4 +10,4 @@ VOLUME [ "/app/src" ]
 
 COPY . .
 
-# CMD [ "npm", "runs" , "start"]
+# CMD [ "npm", "run" , "typeorm:generate"]
