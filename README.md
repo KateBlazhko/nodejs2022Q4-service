@@ -18,7 +18,7 @@ cd nodejs2022Q4-service
 git checkout docker_postgres
 ```
 
-## Installing NPM modules
+## Installing NPM modules (optionally)
 
 ```
 npm install
@@ -27,10 +27,13 @@ npm install
 ## Rename .env.example to .env
 
 ## Running application
+* Create empty database **library-service**
 
 ```
 docker-compose up -d
 ```
+
+* If you use pgAdmin refresh the database **library-service**
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
