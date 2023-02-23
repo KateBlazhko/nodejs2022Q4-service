@@ -1,0 +1,45 @@
+version: '3.2'
+
+services:
+  app:
+    container_name: app
+    build: .
+    links:
+      - 'postgres'
+    networks:
+      - custom
+    env_file:
+      - .env
+    command: >
+      sh -c "npm run typeorm:generate
+              npm run start:dev"
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    container_name: postgres
+    build:
+      context: ./database
+    networks:
+      - custom
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_DATA: '/var/lib/postgresql/data'
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+networks:
+  custom:
+
+volumes:
+  pgdata:

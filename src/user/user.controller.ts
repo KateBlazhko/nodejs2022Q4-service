@@ -12,16 +12,20 @@ import {
   NotFoundException,
   HttpCode,
   ValidationPipe,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { User } from './interfaces/user.interface';
+// import { User } from './interfaces/user.interface';
 import { UserService } from './user.service';
 import { WrongPassword } from 'src/errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
+import { User } from './entity/user.entity';
 
 @Controller('user')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
   constructor(private usersService: UserService) {}
 

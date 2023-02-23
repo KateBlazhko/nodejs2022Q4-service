@@ -16,7 +16,8 @@ import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ChangeTrackDTO } from './dto/change-track.dto';
 import { CreateTrackDTO } from './dto/create-track.dto';
-import { Track } from './interfaces/track.interface';
+import { Track } from './entity/track.entity';
+// import { Track } from './interfaces/track.interface';
 import { TrackService } from './track.service';
 
 @Controller('track')

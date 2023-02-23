@@ -17,7 +17,8 @@ import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { AlbumService } from './album.service';
 import { ChangeAlbumDTO } from './dto/change-album.dto';
 import { CreateAlbumDTO } from './dto/create-album.dto';
-import { Album } from './interfaces/album.interface';
+import { Album } from './entity/album.entity';
+// import { Album } from './interfaces/album.interface';
 
 @Controller('album')
 export class AlbumController {
