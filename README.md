@@ -30,6 +30,7 @@ npm install
 * Create empty database **library-service**
 
 ```
+docker-compose build
 docker-compose up -d
 ```
 
