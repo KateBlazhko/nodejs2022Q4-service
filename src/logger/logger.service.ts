@@ -1,24 +1,45 @@
 import { Injectable, Scope, LoggerService } from '@nestjs/common';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import { StorageService } from 'src/storage/storage.service';
+import loggerLevels from './constants/level.constants';
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class CustomLogger implements LoggerService {
-  log(message: any, ...optionalParams: any[]) {
-    console.log('Custom logger', message);
+  constructor(private storage: StorageService) {}
+
+  async log(message: string) {
+    if (loggerLevels.log <= Number(process.env.MAX_LOG_LEVEL)) {
+      console.log('Custom logger', message);
+      await this.storage.recordData(message, 'log');
+    }
   }
 
-  error(message: any, ...optionalParams: any[]) {
-    console.error('Custom logger error', message);
+  async error(message: string) {
+    if (loggerLevels.error <= Number(process.env.MAX_LOG_LEVEL)) {
+      console.error('Custom logger error', message);
+      await this.storage.recordData(message, 'error');
+    }
   }
 
-  warn(message: any, ...optionalParams: any[]) {
-    console.warn('Custom logger warn', message);
+  async warn(message: string) {
+    if (loggerLevels.warn <= Number(process.env.MAX_LOG_LEVEL)) {
+      console.warn('Custom logger warn', message);
+      await this.storage.recordData(message, 'log');
+    }
   }
 
-  debug?(message: any, ...optionalParams: any[]) {
-    console.debug(message);
+  async debug?(message: any, ...optionalParams: any[]) {
+    if (loggerLevels.debug <= Number(process.env.MAX_LOG_LEVEL)) {
+      console.debug(message);
+      await this.storage.recordData(message, 'log');
+    }
   }
 
-  verbose?(message: any, ...optionalParams: any[]) {
-    console.log(message);
+  async verbose?(message: any, ...optionalParams: any[]) {
+    if (loggerLevels.verbose <= Number(process.env.MAX_LOG_LEVEL)) {
+      console.log(message);
+      await this.storage.recordData(message, 'log');
+    }
   }
 }

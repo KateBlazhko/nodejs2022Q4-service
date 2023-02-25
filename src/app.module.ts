@@ -11,6 +11,7 @@ import configService from './ormconfig';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { CommonExceptionFilter } from './errors/CommonExceptionFilter';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   providers: [
@@ -30,6 +31,7 @@ import { CommonExceptionFilter } from './errors/CommonExceptionFilter';
     ArtistModule,
     FavoritesModule,
     LoggerModule,
+    StorageModule,
   ],
 })
 export class AppModule {
