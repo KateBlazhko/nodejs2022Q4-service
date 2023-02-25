@@ -9,13 +9,14 @@ import { readFile } from 'node:fs/promises';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder()
-    .setTitle('REST Service')
-    .setDescription('The REST Service API description')
-    .setVersion('1.0')
-    .build();
+  // const config = new DocumentBuilder()
+  //   .setTitle('REST Service')
+  //   .setDescription('The REST Service API description')
+  //   .setVersion('1.0')
+  //   .build();
   // const document = SwaggerModule.createDocument(app, config);
 
   const file = await readFile('./doc/api.yaml', { encoding: 'utf8' });
