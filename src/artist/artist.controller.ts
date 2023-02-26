@@ -42,6 +42,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 
@@ -57,6 +58,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 
@@ -69,6 +71,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 }

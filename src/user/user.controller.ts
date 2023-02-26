@@ -50,6 +50,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 
@@ -68,6 +69,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 
@@ -80,6 +82,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 }

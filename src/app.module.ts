@@ -18,10 +18,10 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAuthGuard,
+    // },
     {
       provide: APP_FILTER,
       useClass: CommonExceptionFilter,

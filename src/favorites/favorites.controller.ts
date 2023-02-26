@@ -40,6 +40,7 @@ export class FavoritesController {
       if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
         throw new UnprocessableEntityException(`There is not ${type} with such id`);
+      throw e;
     }
   }
 
@@ -57,6 +58,7 @@ export class FavoritesController {
       if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException(`There is not ${type} with such id`);
+      throw e;
     }
   }
 }

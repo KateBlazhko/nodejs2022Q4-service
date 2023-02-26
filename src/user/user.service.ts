@@ -16,11 +16,10 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(createDTO: CreateUserDTO): Promise<Omit<User, 'password'>> {
+  async create(createDTO: CreateUserDTO): Promise<User> {
     const created = this.userRepository.create(new User(createDTO));
 
-    await this.userRepository.save(created);
-    return created;
+    return await this.userRepository.save(created);
   }
 
   async updatePassword(id: string, changeDTO: UpdatePasswordDTO): Promise<Omit<User, 'password'>> {

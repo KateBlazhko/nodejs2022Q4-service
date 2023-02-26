@@ -43,6 +43,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 
@@ -58,6 +59,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 
@@ -70,6 +72,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 }
