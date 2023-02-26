@@ -14,6 +14,7 @@ import { CommonExceptionFilter } from './errors/CommonExceptionFilter';
 import { StorageModule } from './storage/storage.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   providers: [

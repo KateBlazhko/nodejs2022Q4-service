@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { UserController } from 'src/user/user.controller';
+import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
@@ -8,11 +8,11 @@ import { AuthService } from './auth.service';
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
-    UserController,
+    UserModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY || 'SECRET',
     }),
   ],
-  exports: [AuthService],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
