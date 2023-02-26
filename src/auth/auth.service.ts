@@ -32,7 +32,14 @@ export class AuthService {
     return await this.userSevice.create({ login, password: hashPassword });
   }
 
-  async refresh(refreshDTO: RefreshTokentDTO) {}
+  async refresh({ refreshToken }: RefreshTokentDTO) {
+    const payload = this.jwtService.verify(refreshToken);
+
+    return {
+      accessToken: this.jwtService.sign(payload, { expiresIn: '12h' }),
+      refreshToken: this.jwtService.sign(payload, { expiresIn: '60h' }),
+    };
+  }
 
   private generateToken({ id, login }: Omit<User, 'password'>): TokenType {
     const payload = { id, login };

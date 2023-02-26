@@ -13,5 +13,6 @@ import { AuthService } from './auth.service';
       secret: process.env.JWT_SECRET_KEY || 'SECRET',
     }),
   ],
+  exports: [AuthService],
 })
 export class AuthModule {}
