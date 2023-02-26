@@ -68,4 +68,10 @@ export class UserService {
 
     return founded;
   }
+
+  async findByLogin(login: string): Promise<User | null> {
+    const founded: User | null = await this.userRepository.findOneBy({ login });
+
+    return founded;
+  }
 }

@@ -18,7 +18,6 @@ import { ArtistService } from './artist.service';
 import { ChangeArtistDTO } from './dto/change-artist.dto';
 import { CreateArtistDTO } from './dto/create-artist.dto';
 import { Artist } from './entity/artist.entity';
-// import { Artist } from './interfaces/artist.interface';
 
 @Controller('artist')
 export class ArtistController {

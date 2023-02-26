@@ -12,6 +12,7 @@ import { LoggerMiddleware } from './logger/logger.middleware';
 import { APP_FILTER } from '@nestjs/core';
 import { CommonExceptionFilter } from './errors/CommonExceptionFilter';
 import { StorageModule } from './storage/storage.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   providers: [
@@ -32,6 +33,7 @@ import { StorageModule } from './storage/storage.module';
     FavoritesModule,
     LoggerModule,
     StorageModule,
+    AuthModule,
   ],
 })
 export class AppModule {
