@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Exclude } from 'class-transformer';
+import { Token } from 'src/token/entity/token.entity';
 import {
   Entity,
   Column,
@@ -7,6 +8,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   VersionColumn,
+  OneToOne,
+  JoinColumn,
+  RelationId,
 } from 'typeorm';
 
 @Injectable()
@@ -21,6 +25,20 @@ export class User {
   @Exclude()
   @Column()
   password: string;
+
+  @OneToOne(
+    () => Token,
+    (token) => {
+      token.user;
+    },
+    { onDelete: 'SET NULL', onUpdate: 'CASCADE' },
+  )
+  @JoinColumn()
+  refreshToken: Token | null;
+
+  @Column({ nullable: true, default: null })
+  @RelationId((user: User) => user.refreshToken)
+  refreshTokenId: string | null;
 
   @VersionColumn()
   version: number;

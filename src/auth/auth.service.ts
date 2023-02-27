@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-import { RefreshTokentDTO } from './dto/refresh-token.dto';
+import { RefreshTokentDTO } from '../token/dto/refresh-token.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/entity/user.entity';
 import { InvalidAuth } from 'src/errors/InvalidAuth.error';
+import { TokenService } from 'src/token/token.service';
 
 type TokenType = {
   accessToken: string;
@@ -14,12 +15,16 @@ type TokenType = {
 
 @Injectable()
 export class AuthService {
-  constructor(private userSevice: UserService, private jwtService: JwtService) {}
+  constructor(
+    private userSevice: UserService,
+    private tokenSevice: TokenService,
+    private jwtService: JwtService,
+  ) {}
 
   async login(userDTO: CreateUserDTO): Promise<TokenType> {
     const user = await this.validateUser(userDTO);
 
-    return this.generateToken(user);
+    return await this.generateToken(user);
   }
 
   async signup({ login, password }: CreateUserDTO): Promise<User> {
@@ -41,15 +46,20 @@ export class AuthService {
     };
   }
 
-  private generateToken({ id, login }: Omit<User, 'password'>): TokenType {
+  private async generateToken({ id, login }: Omit<User, 'password'>): Promise<TokenType> {
     const payload = { id, login };
 
-    return {
+    const tokens = {
       accessToken: this.jwtService.sign(payload, { expiresIn: process.env.TOKEN_EXPIRE_TIME }),
       refreshToken: this.jwtService.sign(payload, {
         expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
       }),
     };
+
+    const token = await this.tokenSevice.create({ refreshToken: tokens.refreshToken, userId: id });
+    await this.userSevice.updateToken(id, token.id);
+
+    return tokens;
   }
 
   private async validateUser({ login, password }: CreateUserDTO): Promise<User> {

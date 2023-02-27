@@ -13,6 +13,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { CommonExceptionFilter } from './errors/CommonExceptionFilter';
 import { StorageModule } from './storage/storage.module';
 import { AuthModule } from './auth/auth.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   providers: [
@@ -34,6 +35,7 @@ import { AuthModule } from './auth/auth.module';
     LoggerModule,
     StorageModule,
     AuthModule,
+    TokenModule,
   ],
 })
 export class AppModule {

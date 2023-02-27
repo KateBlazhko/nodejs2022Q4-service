@@ -16,7 +16,7 @@ import { InvalidAuth } from 'src/errors/InvalidAuth.error';
 import { UserAlreadyExist } from 'src/errors/UserAlreadyExist.error';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { RefreshTokentDTO } from './dto/refresh-token.dto';
+import { RefreshTokentDTO } from '../token/dto/refresh-token.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')

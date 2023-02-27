@@ -29,13 +29,28 @@ export class UserService {
 
     if (!user) throw new NoRequiredEntity('update password');
 
-    const nowDate = new Date();
-
     if (user.password !== changeDTO.oldPassword) throw new WrongPassword('update password');
 
     const changed = new User({
       ...user,
       password: changeDTO.newPassword,
+    });
+
+    await this.userRepository.save(changed);
+
+    return changed;
+  }
+
+  async updateToken(id: string, refreshTokenId: string): Promise<Omit<User, 'password'>> {
+    if (!validate(id)) throw new InvalidID('update password');
+
+    const user: User | null = await this.userRepository.findOneBy({ id });
+
+    if (!user) throw new NoRequiredEntity('update password');
+
+    const changed = new User({
+      ...user,
+      refreshTokenId,
     });
 
     await this.userRepository.save(changed);
