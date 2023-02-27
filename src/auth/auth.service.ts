@@ -24,7 +24,7 @@ export class AuthService {
   async login(userDTO: CreateUserDTO): Promise<TokenType> {
     const user = await this.validateUser(userDTO);
 
-    return await this.generateToken(user);
+    return await this.generateToken(user.id, user.login);
   }
 
   async signup({ login, password }: CreateUserDTO): Promise<User> {
@@ -40,13 +40,10 @@ export class AuthService {
   async refresh({ refreshToken }: RefreshTokentDTO) {
     const payload = this.jwtService.verify(refreshToken);
 
-    return {
-      accessToken: this.jwtService.sign(payload, { expiresIn: process.env.TOKEN_EXPIRE_TIME }),
-      refreshToken: this.jwtService.sign({ expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME }),
-    };
+    return await this.generateToken(payload.id, payload.login);
   }
 
-  private async generateToken({ id, login }: Omit<User, 'password'>): Promise<TokenType> {
+  private async generateToken(id: string, login: string): Promise<TokenType> {
     const payload = { id, login };
 
     const tokens = {

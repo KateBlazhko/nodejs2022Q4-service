@@ -31,7 +31,7 @@ export class User {
     (token) => {
       token.user;
     },
-    { onDelete: 'SET NULL', onUpdate: 'CASCADE' },
+    { onDelete: 'SET NULL', onUpdate: 'CASCADE', cascade: true },
   )
   @JoinColumn()
   refreshToken: Token | null;

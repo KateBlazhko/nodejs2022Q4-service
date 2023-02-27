@@ -12,10 +12,10 @@ export class Token {
   refreshToken: string;
 
   @OneToOne(() => User, (user) => user.refreshToken, {
-    cascade: true,
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
+  @JoinColumn()
   user: User;
 
   @Column()

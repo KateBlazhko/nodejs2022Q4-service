@@ -17,7 +17,7 @@ import { UserAlreadyExist } from 'src/errors/UserAlreadyExist.error';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokentDTO } from '../token/dto/refresh-token.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtRefreshGuard } from './jwt-refresh.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -47,10 +47,10 @@ export class AuthController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @Header('Content-Type', 'application/json')
-  async refresh(@Body(ValidationPipe) refreshDTO: RefreshTokentDTO) {
+  async refresh(@Body() refreshDTO: RefreshTokentDTO) {
     try {
       return await this.authService.refresh(refreshDTO);
     } catch (e: unknown) {

@@ -22,7 +22,7 @@
     "scan": "docker scan nodejs2022q4-service_app",
     "typeorm": "typeorm-ts-node-esm -d ./src/migration.config.ts",
     "typeorm:create": "typeorm-ts-node-esm migration:create ./src/migration/BDRefactoring",
-    "typeorm:generate": "npm run typeorm -- migration:generate ./src/migration/BDRefactoring"
+    "typeorm:generate": "npm run typeorm -- migration:generate ./src/migration/BDRefactoring --pretty"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
