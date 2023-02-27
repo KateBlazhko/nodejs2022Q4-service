@@ -22,12 +22,22 @@ export class LoggerMiddleware implements NestMiddleware {
         this.logger.error(`Unhandled rejection detected: ${reason.message}`);
     });
 
-    res.on('finish', () => {
+    const sendOld = res.send;
+
+    res.send = (body) => {
       const { statusCode } = res;
+
       if (statusCode >= 200 && statusCode < 400) {
-        this.logger.log(`Response ${method} ${originalUrl} ${statusCode}`);
+        this.logger.log(
+          `Response Method: ${method} URL: ${originalUrl} Code: ${statusCode} Body: ${body}`,
+        );
       }
-    });
+
+      res.send = sendOld;
+      return res.send(body);
+    };
+
+    res.on('finish', () => {});
     next();
   }
 }
