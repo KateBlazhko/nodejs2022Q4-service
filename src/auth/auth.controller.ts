@@ -8,6 +8,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  UnauthorizedException,
   UseGuards,
   UseInterceptors,
   ValidationPipe,
@@ -18,6 +19,7 @@ import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokentDTO } from '../token/dto/refresh-token.dto';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
+import { InvalidRefreshToken } from 'src/errors/InvalidRefresh.error';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -52,8 +54,12 @@ export class AuthController {
   @Header('Content-Type', 'application/json')
   async refresh(@Body() refreshDTO: RefreshTokentDTO) {
     try {
-      return await this.authService.refresh(refreshDTO);
+      if (refreshDTO.refreshToken && typeof refreshDTO.refreshToken === 'string')
+        return await this.authService.refresh(refreshDTO);
+      throw new InvalidRefreshToken('refresh token');
     } catch (e: unknown) {
+      if (e instanceof InvalidRefreshToken)
+        throw new UnauthorizedException('Refresh token is invalid');
       throw new HttpException('Refresh token is invalid or expired', HttpStatus.FORBIDDEN);
     }
   }
