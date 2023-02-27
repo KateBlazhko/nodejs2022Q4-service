@@ -18,7 +18,7 @@ cd nodejs2022Q4-service
 git checkout auth_logger
 ```
 
-## Installing NPM modules
+## Installing NPM modules (optionally)
 
 ```
 npm install
