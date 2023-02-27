@@ -11,6 +11,7 @@ import {
   UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { InvalidType } from 'src/errors/InvalidType.error';
@@ -19,6 +20,7 @@ import { TypeEntity } from './entity/favorites.entity';
 import { FavoritesService } from './favorites.service';
 import { FavoritesDTO } from './interfaces/favs.interface';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('favs')
 export class FavoritesController {

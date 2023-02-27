@@ -13,6 +13,7 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
@@ -21,6 +22,7 @@ import { CreateTrackDTO } from './dto/create-track.dto';
 import { Track } from './entity/track.entity';
 import { TrackService } from './track.service';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('track')
 export class TrackController {

@@ -25,7 +25,9 @@ import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { User } from './entity/user.entity';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)

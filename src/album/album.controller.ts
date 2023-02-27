@@ -13,6 +13,7 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
@@ -22,6 +23,7 @@ import { CreateAlbumDTO } from './dto/create-album.dto';
 import { Album } from './entity/album.entity';
 // import { Album } from './interfaces/album.interface';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('album')
 export class AlbumController {

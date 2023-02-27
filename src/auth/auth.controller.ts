@@ -21,6 +21,7 @@ import { RefreshTokentDTO } from '../token/dto/refresh-token.dto';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
 import { InvalidRefreshToken } from 'src/errors/InvalidRefresh.error';
 import { ValidationError } from 'class-validator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -50,6 +51,7 @@ export class AuthController {
     }
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   @Header('Content-Type', 'application/json')

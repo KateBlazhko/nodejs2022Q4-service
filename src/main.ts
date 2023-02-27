@@ -12,10 +12,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('REST Service')
     .setDescription('The REST Service API description')
     .setVersion('1.0')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
 
   // const file = await readFile('./doc/api.yaml', { encoding: 'utf8' });
