@@ -26,6 +26,12 @@ npm install
 
 ## Rename .env.example to .env
 
+## Create folder for logs
+
+```
+mkdir ./src/logs
+```
+
 ## Running application
 
 ### 1. You can do it by Docker
