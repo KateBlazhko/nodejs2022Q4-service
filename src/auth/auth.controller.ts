@@ -5,8 +5,9 @@ import {
   Controller,
   Header,
   HttpCode,
+  HttpException,
+  HttpStatus,
   Post,
-  UnauthorizedException,
   UseGuards,
   UseInterceptors,
   ValidationPipe,
@@ -29,7 +30,8 @@ export class AuthController {
     try {
       return await this.authService.login(userDTO);
     } catch (e: unknown) {
-      if (e instanceof InvalidAuth) throw new UnauthorizedException('Invalid login or password');
+      if (e instanceof InvalidAuth)
+        throw new HttpException('Invalid login or password', HttpStatus.FORBIDDEN);
       throw e;
     }
   }
@@ -52,7 +54,7 @@ export class AuthController {
     try {
       return await this.authService.refresh(refreshDTO);
     } catch (e: unknown) {
-      throw new UnauthorizedException('Refresh token expired');
+      throw new HttpException('Refresh token is invalid or expired', HttpStatus.FORBIDDEN);
     }
   }
 }
