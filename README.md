@@ -1,10 +1,5 @@
 # Home Library Service
 
-## Prerequisites
-
-- Git - [Download & Install Git](https://git-scm.com/downloads).
-- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-
 ## Downloading
 
 ```
@@ -20,7 +15,7 @@ cd nodejs2022Q4-service
 ## Change branch
 
 ```
-git checkout develop
+git checkout auth_logger
 ```
 
 ## Installing NPM modules
@@ -33,54 +28,42 @@ npm install
 
 ## Running application
 
+### 1. You can do it by Docker
+
+- Create empty database **library-service**
+
 ```
-npm start
+docker-compose build
+docker-compose up -d
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
-
-## Testing
+### Testing
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
-
 ```
-npm run test
+npm run test:auth:docker
 ```
 
-To run only one of all test suites
+### 2. You can do it by local postrgreSQL server
+
+- run postgresql.service
+- change variable POSTGRES_HOST=postgres to POSTGRES_HOST=localhost
 
 ```
-npm run test -- <path to suite>
+npm run start:dev
 ```
 
-To run all test with authorization
+### Testing
+
+After application running open new terminal and enter:
 
 ```
 npm run test:auth
 ```
 
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
-```
-
-### Auto-fix and format
+## Auto-fix and format
 
 ```
 npm run lint
 ```
-
-```
-npm run format
-```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging

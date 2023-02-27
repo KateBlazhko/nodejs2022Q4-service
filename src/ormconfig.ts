@@ -10,9 +10,9 @@ const configService: TypeOrmModuleOptions = {
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   entities: ['dist/**/entity/*.js'],
-  migrations: ['dist/migration/*.js'],
-  migrationsRun: true,
-  synchronize: false,
+  // migrations: ['dist/migration/*.js'],
+  // migrationsRun: true,
+  synchronize: true,
 };
 
 export default configService;
