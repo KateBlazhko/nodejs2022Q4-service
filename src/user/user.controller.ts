@@ -14,6 +14,7 @@ import {
   ValidationPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -23,7 +24,9 @@ import { WrongPassword } from 'src/errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { User } from './entity/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {

@@ -7,6 +7,7 @@ import {
   HttpCode,
   Post,
   UnauthorizedException,
+  UseGuards,
   UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,6 +16,7 @@ import { UserAlreadyExist } from 'src/errors/UserAlreadyExist.error';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { RefreshTokentDTO } from './dto/refresh-token.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -43,6 +45,7 @@ export class AuthController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('refresh')
   @Header('Content-Type', 'application/json')
   async refresh(@Body(ValidationPipe) refreshDTO: RefreshTokentDTO) {

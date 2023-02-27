@@ -1,8 +1,5 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserAlreadyExist } from 'src/errors/UserAlreadyExist.error';
 import { CreateUserDTO } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { RefreshTokentDTO } from './dto/refresh-token.dto';
@@ -28,7 +25,7 @@ export class AuthService {
   async signup({ login, password }: CreateUserDTO): Promise<User> {
     const founded = await this.userSevice.findByLogin(login);
 
-    if (founded) throw new UserAlreadyExist('signup user');
+    // if (founded) throw new UserAlreadyExist('signup user');
 
     const hashPassword = await bcrypt.hash(password, Number(process.env.CRYPT_SALT));
 
@@ -48,8 +45,10 @@ export class AuthService {
     const payload = { id, login };
 
     return {
-      accessToken: this.jwtService.sign(payload, { expiresIn: '12h' }),
-      refreshToken: this.jwtService.sign(payload, { expiresIn: '60h' }),
+      accessToken: this.jwtService.sign(payload, { expiresIn: process.env.TOKEN_EXPIRE_TIME }),
+      refreshToken: this.jwtService.sign(payload, {
+        expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
+      }),
     };
   }
 
@@ -58,7 +57,7 @@ export class AuthService {
 
     if (!founded) throw new InvalidAuth('login user');
 
-    const isRightPassword = await bcrypt.compare(founded.password, password);
+    const isRightPassword = await bcrypt.compare(password, founded.password);
 
     if (isRightPassword) {
       return founded;

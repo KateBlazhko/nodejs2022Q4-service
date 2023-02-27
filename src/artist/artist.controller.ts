@@ -10,8 +10,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ArtistService } from './artist.service';
@@ -19,6 +21,7 @@ import { ChangeArtistDTO } from './dto/change-artist.dto';
 import { CreateArtistDTO } from './dto/create-artist.dto';
 import { Artist } from './entity/artist.entity';
 
+@UseGuards(JwtAuthGuard)
 @Controller('artist')
 export class ArtistController {
   constructor(private artistsService: ArtistService) {}

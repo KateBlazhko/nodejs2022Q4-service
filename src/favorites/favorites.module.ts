@@ -6,6 +6,7 @@ import { Favorites } from './entity/favorites.entity';
 import { Track } from 'src/track/entity/track.entity';
 import { Album } from 'src/album/entity/album.entity';
 import { Artist } from 'src/artist/entity/artist.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [FavoritesController],
@@ -15,6 +16,9 @@ import { Artist } from 'src/artist/entity/artist.entity';
     TypeOrmModule.forFeature([Track]),
     TypeOrmModule.forFeature([Album]),
     TypeOrmModule.forFeature([Artist]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY || 'SECRET',
+    }),
   ],
 })
 export class FavoritesModule {}

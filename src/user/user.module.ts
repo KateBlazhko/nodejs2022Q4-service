@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [UserController],
@@ -14,7 +15,12 @@ import { User } from './entity/user.entity';
       useClass: ValidationPipe,
     },
   ],
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY || 'SECRET',
+    }),
+  ],
   exports: [UserService],
 })
 export class UserModule {}

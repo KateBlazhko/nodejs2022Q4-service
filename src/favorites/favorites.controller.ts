@@ -9,7 +9,9 @@ import {
   NotFoundException,
   HttpCode,
   UnprocessableEntityException,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { InvalidType } from 'src/errors/InvalidType.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
@@ -17,6 +19,7 @@ import { TypeEntity } from './entity/favorites.entity';
 import { FavoritesService } from './favorites.service';
 import { FavoritesDTO } from './interfaces/favs.interface';
 
+@UseGuards(JwtAuthGuard)
 @Controller('favs')
 export class FavoritesController {
   constructor(private favoritesService: FavoritesService) {}
