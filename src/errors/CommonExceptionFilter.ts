@@ -31,15 +31,15 @@ export class CommonExceptionFilter implements ExceptionFilter {
       this.logger.warn(message);
     }
 
-    process.on('uncaughtException', (error) => {
-      this.logger.error(`captured error: ${error.message}`);
-      process.exit(1);
-    });
+    // process.on('uncaughtException', (error) => {
+    //   this.logger.error(`captured error: ${error.message}`);
+    //   process.exit(1);
+    // });
 
-    process.on('unhandledRejection', (reason) => {
-      if (reason instanceof Error)
-        this.logger.error(`Unhandled rejection detected: ${reason.message}`);
-    });
+    // process.on('unhandledRejection', (reason) => {
+    //   if (reason instanceof Error)
+    //     this.logger.error(`Unhandled rejection detected: ${reason.message}`);
+    // });
 
     const responseBody = {
       statusCode: httpStatus,

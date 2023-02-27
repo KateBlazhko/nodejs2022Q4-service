@@ -8,13 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [UserController],
-  providers: [
-    UserService,
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
-  ],
+  providers: [UserService],
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
