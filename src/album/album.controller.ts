@@ -11,7 +11,10 @@ import {
   NotFoundException,
   HttpCode,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { AlbumService } from './album.service';
@@ -20,6 +23,8 @@ import { CreateAlbumDTO } from './dto/create-album.dto';
 import { Album } from './entity/album.entity';
 // import { Album } from './interfaces/album.interface';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('album')
 export class AlbumController {
   constructor(private albumService: AlbumService) {}
@@ -43,6 +48,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 
@@ -58,6 +64,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 
@@ -70,6 +77,7 @@ export class AlbumController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not album with such id');
+      throw e;
     }
   }
 }

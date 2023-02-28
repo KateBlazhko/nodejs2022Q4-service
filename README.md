@@ -15,7 +15,7 @@ cd nodejs2022Q4-service
 ## Change branch
 
 ```
-git checkout docker_postgres
+git checkout auth_logger
 ```
 
 ## Installing NPM modules (optionally)
@@ -26,56 +26,50 @@ npm install
 
 ## Rename .env.example to .env
 
+## Create folder for logs
+
+```
+mkdir ./src/logs
+```
+
 ## Running application
-* Create empty database **library-service**
+
+### 1. You can do it by Docker
+
+- Create empty database **library-service**
 
 ```
 docker-compose build
 docker-compose up -d
 ```
 
-* If you use pgAdmin refresh the database **library-service**
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-
-### For check: 
-* **Pay attention**: Database files and logs to be stored in volumes pgdata. 
-
-## DockerHub
-
-https://hub.docker.com/repository/docker/kateblazhko/nodejs2022q4-service/general.
-
-## Testing
+### Testing
 
 After application running open new terminal and enter:
 
-To scan it for security vulnerabilities
-
 ```
-npm run scan
+npm run test:auth:docker
 ```
 
-To run all tests without authorization
+### 2. You can do it by local postrgreSQL server
+
+- run postgresql.service
+- change variable POSTGRES_HOST=postgres to POSTGRES_HOST=localhost
 
 ```
-npm run test
+npm run start:dev
 ```
 
-To run only one of all test suites
+### Testing
+
+After application running open new terminal and enter:
 
 ```
-npm run test -- <path to suite>
+npm run test:auth
 ```
 
-### Auto-fix and format
+## Auto-fix and format
 
 ```
 npm run lint
 ```
-
-### Debugging in VSCode
-
-Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging

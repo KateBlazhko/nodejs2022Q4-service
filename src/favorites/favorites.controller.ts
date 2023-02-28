@@ -9,7 +9,10 @@ import {
   NotFoundException,
   HttpCode,
   UnprocessableEntityException,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { InvalidType } from 'src/errors/InvalidType.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
@@ -17,6 +20,8 @@ import { TypeEntity } from './entity/favorites.entity';
 import { FavoritesService } from './favorites.service';
 import { FavoritesDTO } from './interfaces/favs.interface';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('favs')
 export class FavoritesController {
   constructor(private favoritesService: FavoritesService) {}
@@ -40,6 +45,7 @@ export class FavoritesController {
       if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
         throw new UnprocessableEntityException(`There is not ${type} with such id`);
+      throw e;
     }
   }
 
@@ -57,6 +63,7 @@ export class FavoritesController {
       if (e instanceof InvalidType) throw new BadRequestException('Validation type Entity failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException(`There is not ${type} with such id`);
+      throw e;
     }
   }
 }

@@ -19,7 +19,6 @@ export class ArtistService {
 
   async create(createDTO: CreateArtistDTO): Promise<Artist> {
     const created = this.artistRepository.create(createDTO);
-
     return await this.artistRepository.save(created);
   }
 

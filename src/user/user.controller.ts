@@ -14,6 +14,7 @@ import {
   ValidationPipe,
   UseInterceptors,
   ClassSerializerInterceptor,
+  UseGuards,
 } from '@nestjs/common';
 import { UpdatePasswordDTO } from './dto/update-password.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
@@ -23,7 +24,11 @@ import { WrongPassword } from 'src/errors/WrongPassword.error';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { User } from './entity/user.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
@@ -50,6 +55,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 
@@ -68,6 +74,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 
@@ -80,6 +87,7 @@ export class UserController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not user with such id');
+      throw e;
     }
   }
 }

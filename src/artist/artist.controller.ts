@@ -10,16 +10,18 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ArtistService } from './artist.service';
 import { ChangeArtistDTO } from './dto/change-artist.dto';
 import { CreateArtistDTO } from './dto/create-artist.dto';
 import { Artist } from './entity/artist.entity';
-// import { Artist } from './interfaces/artist.interface';
 
+@UseGuards(JwtAuthGuard)
 @Controller('artist')
 export class ArtistController {
   constructor(private artistsService: ArtistService) {}
@@ -43,6 +45,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 
@@ -58,6 +61,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 
@@ -70,6 +74,7 @@ export class ArtistController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not artist with such id');
+      throw e;
     }
   }
 }

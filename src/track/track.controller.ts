@@ -11,15 +11,19 @@ import {
   NotFoundException,
   HttpCode,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InvalidID } from 'src/errors/InvalidID.error';
 import { NoRequiredEntity } from 'src/errors/NoRequireEntity.error';
 import { ChangeTrackDTO } from './dto/change-track.dto';
 import { CreateTrackDTO } from './dto/create-track.dto';
 import { Track } from './entity/track.entity';
-// import { Track } from './interfaces/track.interface';
 import { TrackService } from './track.service';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('track')
 export class TrackController {
   constructor(private tracksService: TrackService) {}
@@ -43,6 +47,7 @@ export class TrackController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not track with such id');
+      throw e;
     }
   }
 
@@ -58,6 +63,7 @@ export class TrackController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not track with such id');
+      throw e;
     }
   }
 
@@ -70,6 +76,7 @@ export class TrackController {
       if (e instanceof InvalidID) throw new BadRequestException('Validation id failed');
       if (e instanceof NoRequiredEntity)
         throw new NotFoundException('There is not track with such id');
+      throw e;
     }
   }
 }
